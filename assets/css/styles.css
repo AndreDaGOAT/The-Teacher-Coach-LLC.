@@ -112,6 +112,41 @@ h3 { font-size: 1.25rem; }
 .footer__links a { text-decoration: none; }
 .footer__legal { margin: 2rem 0 0; text-align: center; font-size: .9rem; }
 
+.package-cascade { display: grid; gap: 1.25rem; margin-top: 2.5rem; }
+.package-card { border: 1px solid rgba(18, 50, 74, .1); border-top: 4px solid var(--color-blue-700); border-radius: var(--radius-lg); background: var(--color-white); box-shadow: 0 .75rem 2rem rgba(18, 50, 74, .06); overflow: hidden; transition: box-shadow .2s ease, transform .2s ease; }
+.package-card:hover { box-shadow: var(--shadow-soft); }
+.package-card--bronze { border-top-color: #b08d57; }
+.package-card--silver { border-top-color: #9aa7b0; }
+.package-card--gold { border-top-color: var(--color-gold); }
+.package-card--vip { border-top-color: var(--color-blue-900); background: linear-gradient(135deg, var(--color-blue-100), #fff); }
+.package-card > summary { cursor: pointer; list-style: none; padding: 1.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; font-weight: 700; }
+.package-card > summary::-webkit-details-marker { display: none; }
+.package-card__tier { font-size: .72rem; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; padding: .35rem .8rem; border-radius: 999px; background: var(--color-blue-100); color: var(--color-blue-700); }
+.package-card--vip .package-card__tier { background: var(--color-blue-900); color: var(--color-white); }
+.package-card__name { font-weight: 800; font-size: 1.15rem; color: var(--color-blue-900); flex: 1 1 12rem; min-width: 0; }
+.package-card__price { font-weight: 800; color: var(--color-gold); white-space: nowrap; }
+.package-card__chevron { color: var(--color-blue-700); flex-shrink: 0; transition: transform .25s ease; }
+details[open] > summary .package-card__chevron { transform: rotate(180deg); }
+.package-card__body { padding: 0 1.5rem 1.75rem; display: grid; gap: 1.25rem; animation: rise-in .35s ease both; }
+.package-card__body h4 { margin: 0 0 .6rem; font-size: .82rem; text-transform: uppercase; letter-spacing: .08em; color: var(--color-blue-700); }
+.package-card__tagline { margin: 0; color: var(--color-muted); font-style: italic; }
+.package-card__investment { margin: 0; font-weight: 800; color: var(--color-blue-900); border-top: 1px dashed rgba(18, 50, 74, .15); padding-top: 1rem; }
+.check-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; color: var(--color-ink); }
+.check-list li { padding-left: 1.6rem; position: relative; }
+.check-list li::before { content: "✔"; position: absolute; left: 0; color: var(--color-gold); font-weight: 800; }
+.tag-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.tag-list li { background: var(--color-blue-100); color: var(--color-blue-700); padding: .35rem .8rem; border-radius: 999px; font-size: .85rem; font-weight: 700; }
+
+.addon-panel { margin-top: 3rem; padding: clamp(1.5rem, 5vw, 2.5rem); border-radius: var(--radius-lg); background: var(--color-blue-100); }
+.addon-panel h3 { margin-bottom: .35rem; }
+.addon-panel > p { margin: 0; color: var(--color-muted); }
+.addon-grid { display: grid; gap: 1rem; margin-top: 1.5rem; }
+.addon-card { background: var(--color-white); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: 0 .5rem 1.5rem rgba(18, 50, 74, .05); }
+.addon-card h4 { margin: 0 0 .6rem; color: var(--color-blue-900); font-size: 1.02rem; }
+.addon-card ul { margin: 0 0 .75rem; padding-left: 1.1rem; color: var(--color-muted); }
+.addon-card ul li { margin-bottom: .2rem; }
+.addon-card__price { margin: 0; font-weight: 800; color: var(--color-gold); }
+
 .reveal { animation: rise-in .7s ease both; }
 .reveal--delay { animation-delay: .12s; }
 .reveal--delay-long { animation-delay: .22s; }
@@ -128,4 +163,12 @@ h3 { font-size: 1.25rem; }
   .nav__menu { position: static; display: flex; align-items: center; gap: .5rem; padding: 0; box-shadow: none; background: transparent; }
   .hero__grid, .split, .footer__grid { grid-template-columns: 1.1fr .9fr; }
   .card-grid, .reason-list { grid-template-columns: repeat(3, 1fr); }
+  .addon-grid { grid-template-columns: repeat(2, 1fr); }
+  .package-cascade .package-card:nth-child(1) { margin-inline-end: 10%; }
+  .package-cascade .package-card:nth-child(2) { margin-inline: 5%; }
+  .package-cascade .package-card:nth-child(3) { margin-inline-start: 10%; }
+}
+
+@media (min-width: 64rem) {
+  .addon-grid { grid-template-columns: repeat(3, 1fr); }
 }
