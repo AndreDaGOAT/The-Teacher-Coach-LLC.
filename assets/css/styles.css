@@ -110,6 +110,8 @@ h3 { font-size: 1.25rem; }
 .footer__grid { display: grid; gap: 1.5rem; }
 .footer__links { list-style: none; padding: 0; margin: 0; display: grid; gap: .5rem; }
 .footer__links a { text-decoration: none; }
+.footer__staff-link { opacity: .55; font-size: .85em; }
+.footer__staff-link:hover, .footer__staff-link:focus-visible { opacity: 1; }
 .footer__legal { margin: 2rem 0 0; text-align: center; font-size: .9rem; }
 
 .package-cascade { display: grid; gap: 1.25rem; margin-top: 2.5rem; }
