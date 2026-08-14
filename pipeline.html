@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Procurement Pipeline | The Teacher Coach LLC</title>
+<link rel="stylesheet" href="assets/css/styles.css" />
+<link rel="stylesheet" href="assets/css/pipeline.css" />
+</head>
+<body class="pipeline-body">
+
+<header class="pipeline-topbar">
+  <div class="pipeline-topbar-brand">
+    <img src="assets/images/Picture1.png" alt="The Teacher Coach LLC" class="pipeline-logo" />
+    <div>
+      <p class="pipeline-eyebrow">The Teacher Coach LLC</p>
+      <h1 class="pipeline-title">Tennessee Procurement Pipeline</h1>
+    </div>
+  </div>
+  <div class="pipeline-topbar-user">
+    <span id="userEmail" class="pipeline-user-email"></span>
+    <a href="index.html" class="btn btn-ghost pipeline-btn-sm">Back to Site</a>
+    <button id="signOutBtn" class="btn btn-outline pipeline-btn-sm">Sign Out</button>
+  </div>
+</header>
+
+<main class="pipeline-main">
+
+  <!-- STATS -->
+  <section class="pipeline-stats" id="statsRow" aria-label="Pipeline summary">
+    <div class="stat-card">
+      <p class="stat-label">Open Pipeline Value</p>
+      <p class="stat-value" id="statOpenValue">—</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Open Opportunities</p>
+      <p class="stat-value" id="statOpenCount">—</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Closing in 30 Days</p>
+      <p class="stat-value" id="statClosingSoon">—</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Follow-ups Due</p>
+      <p class="stat-value" id="statFollowupsDue">—</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Districts Tracked</p>
+      <p class="stat-value" id="statDistrictCount">—</p>
+    </div>
+  </section>
+
+  <!-- TOOLBAR -->
+  <section class="pipeline-toolbar">
+    <div class="pipeline-toolbar-filters">
+      <input type="search" id="searchInput" class="pipeline-input" placeholder="Search district or opportunity…" />
+
+      <select id="filterStatus" class="pipeline-select">
+        <option value="">All statuses</option>
+        <option value="WATCH">Watch</option>
+        <option value="UPCOMING">Upcoming</option>
+        <option value="OPEN">Open</option>
+        <option value="CLOSED">Closed</option>
+        <option value="AWARDED">Awarded</option>
+        <option value="EXPIRED">Expired</option>
+        <option value="CANCELLED">Cancelled</option>
+      </select>
+
+      <select id="filterPriority" class="pipeline-select">
+        <option value="">All priorities</option>
+        <option value="A">Priority A</option>
+        <option value="B">Priority B</option>
+        <option value="C">Priority C</option>
+        <option value="D">Priority D</option>
+      </select>
+
+      <select id="filterFunding" class="pipeline-select">
+        <option value="">All funding sources</option>
+      </select>
+
+      <label class="pipeline-checkbox-label">
+        <input type="checkbox" id="filterFollowupsDue" />
+        Follow-up due
+      </label>
+    </div>
+
+    <button id="newOpportunityBtn" class="btn btn-primary pipeline-btn-sm">+ New Opportunity</button>
+  </section>
+
+  <!-- TABLE -->
+  <section class="pipeline-table-wrap">
+    <table class="pipeline-table" id="opportunityTable">
+      <thead>
+        <tr>
+          <th data-sort="organization_name">District / Org</th>
+          <th data-sort="opportunity_name">Opportunity</th>
+          <th data-sort="status">Status</th>
+          <th data-sort="priority">Priority</th>
+          <th data-sort="match_score">Match</th>
+          <th data-sort="estimated_value">Est. Value</th>
+          <th data-sort="funding_source">Funding</th>
+          <th data-sort="close_date">Close Date</th>
+          <th data-sort="next_action_date">Next Action</th>
+        </tr>
+      </thead>
+      <tbody id="opportunityTableBody">
+        <tr><td colspan="9" class="pipeline-loading">Loading pipeline…</td></tr>
+      </tbody>
+    </table>
+    <p id="emptyState" class="pipeline-empty" hidden>No opportunities match these filters yet.</p>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     DETAIL / EDIT SLIDE-OVER
+============================================================= -->
+<div id="detailOverlay" class="pipeline-overlay" hidden></div>
+<aside id="detailPanel" class="pipeline-drawer" hidden aria-label="Opportunity detail">
+  <div class="pipeline-drawer-head">
+    <div>
+      <p class="drawer-eyebrow" id="detailOrgName">—</p>
+      <h2 class="drawer-title" id="detailOppName">—</h2>
+    </div>
+    <button class="drawer-close" id="closeDetailBtn" aria-label="Close">&times;</button>
+  </div>
+
+  <div class="pipeline-drawer-body">
+
+    <div class="drawer-section drawer-badges">
+      <select id="detailStatus" class="pipeline-select badge-select"></select>
+      <select id="detailPriority" class="pipeline-select badge-select"></select>
+      <div class="match-score-wrap">
+        <label for="detailMatchScore" class="drawer-label">Match Score</label>
+        <input type="number" id="detailMatchScore" class="pipeline-input match-score-input" min="0" max="100" />
+      </div>
+    </div>
+
+    <div class="drawer-section">
+      <h3 class="drawer-h3">Documented Literacy Need</h3>
+      <textarea id="detailDescription" class="pipeline-textarea" rows="3"></textarea>
+    </div>
+
+    <div class="drawer-grid">
+      <div>
+        <h3 class="drawer-h3">Funding Source</h3>
+        <select id="detailFunding" class="pipeline-select"></select>
+      </div>
+      <div>
+        <h3 class="drawer-h3">Category</h3>
+        <input type="text" id="detailCategory" class="pipeline-input" />
+      </div>
+    </div>
+
+    <div class="drawer-grid">
+      <div>
+        <h3 class="drawer-h3">Estimated Value ($)</h3>
+        <input type="number" id="detailValue" class="pipeline-input" min="0" step="100" />
+      </div>
+      <div>
+        <h3 class="drawer-h3">Solicitation #</h3>
+        <input type="text" id="detailSolicitation" class="pipeline-input" />
+      </div>
+    </div>
+
+    <div class="drawer-grid">
+      <div>
+        <h3 class="drawer-h3">Open Date</h3>
+        <input type="date" id="detailOpenDate" class="pipeline-input" />
+      </div>
+      <div>
+        <h3 class="drawer-h3">Close Date</h3>
+        <input type="date" id="detailCloseDate" class="pipeline-input" />
+      </div>
+    </div>
+
+    <div class="drawer-section">
+      <h3 class="drawer-h3">Procurement Link</h3>
+      <input type="url" id="detailProcurementUrl" class="pipeline-input" placeholder="https://…" />
+    </div>
+
+    <div class="drawer-grid">
+      <div>
+        <h3 class="drawer-h3">Incumbent Vendor</h3>
+        <select id="detailIncumbent" class="pipeline-select"></select>
+      </div>
+      <div>
+        <h3 class="drawer-h3">Prime Vendor</h3>
+        <select id="detailPrime" class="pipeline-select"></select>
+      </div>
+    </div>
+
+    <div class="drawer-section">
+      <h3 class="drawer-h3">Recommended Service Package</h3>
+      <div id="detailServices" class="service-checkboxes"></div>
+    </div>
+
+    <div class="drawer-section">
+      <h3 class="drawer-h3">Contract Status</h3>
+      <div id="detailContract" class="drawer-readout">No contract on file for this opportunity.</div>
+    </div>
+
+    <div class="drawer-section">
+      <h3 class="drawer-h3">Contact Person</h3>
+      <div id="detailContacts" class="drawer-readout"></div>
+      <button id="addContactBtn" class="btn btn-outline pipeline-btn-sm">+ Add Contact</button>
+    </div>
+
+    <div class="drawer-grid">
+      <div>
+        <h3 class="drawer-h3">Next Action</h3>
+        <input type="text" id="detailNextAction" class="pipeline-input" placeholder="e.g. Call procurement office" />
+      </div>
+      <div>
+        <h3 class="drawer-h3">Follow-up Date</h3>
+        <input type="date" id="detailNextActionDate" class="pipeline-input" />
+      </div>
+    </div>
+
+    <div class="drawer-section">
+      <h3 class="drawer-h3">Notes</h3>
+      <textarea id="detailNotes" class="pipeline-textarea" rows="3"></textarea>
+    </div>
+
+    <div class="drawer-section">
+      <h3 class="drawer-h3">Follow-up Log</h3>
+      <div id="followupLog" class="followup-log"></div>
+      <div class="followup-add">
+        <select id="followupActionType" class="pipeline-select">
+          <option value="CALL">Call</option>
+          <option value="EMAIL">Email</option>
+          <option value="MEETING">Meeting</option>
+          <option value="PROPOSAL_SENT">Proposal Sent</option>
+          <option value="OTHER">Other</option>
+        </select>
+        <input type="text" id="followupResult" class="pipeline-input" placeholder="What happened?" />
+        <button id="addFollowupBtn" class="btn btn-outline pipeline-btn-sm">+ Log Follow-up</button>
+      </div>
+    </div>
+
+    <div class="drawer-footer">
+      <button id="deleteOppBtn" class="btn btn-danger-outline pipeline-btn-sm">Delete Opportunity</button>
+      <button id="saveDetailBtn" class="btn btn-primary">Save Changes</button>
+    </div>
+  </div>
+</aside>
+
+<!-- ============================================================
+     NEW OPPORTUNITY MODAL
+============================================================= -->
+<div id="newOppOverlay" class="pipeline-overlay" hidden></div>
+<div id="newOppModal" class="pipeline-modal" hidden aria-label="New opportunity">
+  <div class="pipeline-modal-head">
+    <h2>New Opportunity</h2>
+    <button class="drawer-close" id="closeNewOppBtn" aria-label="Close">&times;</button>
+  </div>
+  <form id="newOppForm" class="pipeline-modal-body">
+
+    <label class="drawer-label">District / Organization</label>
+    <div class="org-picker-row">
+      <select id="newOppOrg" class="pipeline-select" required></select>
+      <button type="button" id="newOrgToggleBtn" class="btn btn-outline pipeline-btn-sm">+ New District</button>
+    </div>
+
+    <div id="newOrgFields" class="drawer-grid" hidden>
+      <div>
+        <label class="drawer-label">District Name</label>
+        <input type="text" id="newOrgName" class="pipeline-input" />
+      </div>
+      <div>
+        <label class="drawer-label">County</label>
+        <input type="text" id="newOrgCounty" class="pipeline-input" />
+      </div>
+    </div>
+
+    <label class="drawer-label">Opportunity Name</label>
+    <input type="text" id="newOppName" class="pipeline-input" required />
+
+    <div class="drawer-grid">
+      <div>
+        <label class="drawer-label">Funding Source</label>
+        <select id="newOppFunding" class="pipeline-select"></select>
+      </div>
+      <div>
+        <label class="drawer-label">Status</label>
+        <select id="newOppStatus" class="pipeline-select">
+          <option value="WATCH">Watch</option>
+          <option value="UPCOMING">Upcoming</option>
+          <option value="OPEN">Open</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="drawer-grid">
+      <div>
+        <label class="drawer-label">Priority</label>
+        <select id="newOppPriority" class="pipeline-select">
+          <option value="A">A</option>
+          <option value="B" selected>B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+        </select>
+      </div>
+      <div>
+        <label class="drawer-label">Match Score (0–100)</label>
+        <input type="number" id="newOppMatchScore" class="pipeline-input" min="0" max="100" />
+      </div>
+    </div>
+
+    <label class="drawer-label">Documented Literacy Need</label>
+    <textarea id="newOppDescription" class="pipeline-textarea" rows="2"></textarea>
+
+    <div class="drawer-grid">
+      <div>
+        <label class="drawer-label">Estimated Value ($)</label>
+        <input type="number" id="newOppValue" class="pipeline-input" min="0" step="100" />
+      </div>
+      <div>
+        <label class="drawer-label">Close Date</label>
+        <input type="date" id="newOppCloseDate" class="pipeline-input" />
+      </div>
+    </div>
+
+    <label class="drawer-label">Procurement Link</label>
+    <input type="url" id="newOppUrl" class="pipeline-input" placeholder="https://…" />
+
+    <label class="drawer-label">Recommended Service Package</label>
+    <div id="newOppServices" class="service-checkboxes"></div>
+
+    <div class="drawer-grid">
+      <div>
+        <label class="drawer-label">Next Action</label>
+        <input type="text" id="newOppNextAction" class="pipeline-input" />
+      </div>
+      <div>
+        <label class="drawer-label">Follow-up Date</label>
+        <input type="date" id="newOppNextActionDate" class="pipeline-input" />
+      </div>
+    </div>
+
+    <p class="pipeline-form-error" id="newOppError" hidden></p>
+
+    <div class="drawer-footer">
+      <button type="submit" class="btn btn-primary" id="newOppSubmitBtn">Create Opportunity</button>
+    </div>
+  </form>
+</div>
+
+<!-- ============================================================
+     ADD CONTACT MODAL
+============================================================= -->
+<div id="newContactOverlay" class="pipeline-overlay" hidden></div>
+<div id="newContactModal" class="pipeline-modal pipeline-modal-sm" hidden aria-label="New contact">
+  <div class="pipeline-modal-head">
+    <h2>Add Contact</h2>
+    <button class="drawer-close" id="closeNewContactBtn" aria-label="Close">&times;</button>
+  </div>
+  <form id="newContactForm" class="pipeline-modal-body">
+    <div class="drawer-grid">
+      <div>
+        <label class="drawer-label">First Name</label>
+        <input type="text" id="contactFirstName" class="pipeline-input" />
+      </div>
+      <div>
+        <label class="drawer-label">Last Name</label>
+        <input type="text" id="contactLastName" class="pipeline-input" />
+      </div>
+    </div>
+    <label class="drawer-label">Title</label>
+    <input type="text" id="contactTitle" class="pipeline-input" placeholder="e.g. Director of Federal Programs" />
+    <div class="drawer-grid">
+      <div>
+        <label class="drawer-label">Email</label>
+        <input type="email" id="contactEmail" class="pipeline-input" />
+      </div>
+      <div>
+        <label class="drawer-label">Phone</label>
+        <input type="tel" id="contactPhone" class="pipeline-input" />
+      </div>
+    </div>
+    <div class="drawer-footer">
+      <button type="submit" class="btn btn-primary">Add Contact</button>
+    </div>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js"></script>
+<script src="assets/js/auth-guard.js"></script>
+<script src="assets/js/pipeline.js"></script>
+</body>
+</html>
