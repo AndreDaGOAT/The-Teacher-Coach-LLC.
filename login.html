@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Sign In | The Teacher Coach LLC — Pipeline</title>
+<link rel="stylesheet" href="assets/css/styles.css" />
+<link rel="stylesheet" href="assets/css/pipeline.css" />
+</head>
+<body class="pipeline-body login-body">
+
+<div class="login-shell">
+  <div class="login-card">
+    <div class="login-brand">
+      <img src="assets/images/Picture1.png" alt="The Teacher Coach LLC" class="login-logo" />
+      <div>
+        <p class="login-eyebrow">The Teacher Coach LLC</p>
+        <h1 class="login-title">Procurement Pipeline</h1>
+      </div>
+    </div>
+
+    <p class="login-sub">Staff access only. Sign in to view districts, opportunities, and follow-ups.</p>
+
+    <form id="loginForm" class="login-form" novalidate>
+      <label class="login-label" for="email">Email</label>
+      <input class="login-input" type="email" id="email" name="email" autocomplete="username" required />
+
+      <label class="login-label" for="password">Password</label>
+      <input class="login-input" type="password" id="password" name="password" autocomplete="current-password" required />
+
+      <button type="submit" class="btn btn-primary login-btn" id="loginBtn">Sign In</button>
+
+      <p class="login-error" id="loginError" role="alert" hidden></p>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js"></script>
+<script>
+  (async function redirectIfSignedIn() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (session) window.location.replace("pipeline.html");
+  })();
+
+  const form = document.getElementById("loginForm");
+  const errorEl = document.getElementById("loginError");
+  const btn = document.getElementById("loginBtn");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorEl.hidden = true;
+    btn.disabled = true;
+    btn.textContent = "Signing in…";
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      errorEl.textContent = "Sign-in failed. Check your email and password and try again.";
+      errorEl.hidden = false;
+      btn.disabled = false;
+      btn.textContent = "Sign In";
+      return;
+    }
+
+    window.location.replace("pipeline.html");
+  });
+</script>
+</body>
+</html>
