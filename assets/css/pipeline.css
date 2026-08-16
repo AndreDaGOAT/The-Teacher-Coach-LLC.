@@ -22,6 +22,15 @@
   --pl-shadow-lg: 0 12px 40px rgba(16, 49, 79, 0.18);
 }
 
+/* The [hidden] attribute must win over any class that sets its own
+   display value (author-stylesheet display: flex/grid otherwise beats
+   the browser's built-in [hidden]{display:none} rule). */
+.pipeline-overlay[hidden],
+.pipeline-drawer[hidden],
+.pipeline-modal[hidden]{
+  display: none !important;
+}
+
 html.auth-ready body.pipeline-body{ visibility: visible; }
 body.pipeline-body{
   visibility: hidden; /* prevents flash before auth-guard confirms session */
