@@ -114,6 +114,14 @@ h3 { font-size: 1.25rem; }
 .footer__staff-link:hover, .footer__staff-link:focus-visible { opacity: 1; }
 .footer__legal { margin: 2rem 0 0; text-align: center; font-size: .9rem; }
 
+.testimonial-group__title { margin: 2.5rem 0 1.25rem; font-size: 1.15rem; color: var(--color-blue-900); }
+.testimonial-group__title:first-of-type { margin-top: 0; }
+.testimonial-grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); }
+.testimonial-card { background: var(--color-white); border: 1px solid rgba(18, 50, 74, .09); border-radius: var(--radius-lg); padding: 1rem; box-shadow: 0 .75rem 2rem rgba(18, 50, 74, .06); }
+.testimonial-card__video { width: 100%; max-height: 26rem; border-radius: var(--radius-md); background: #000; display: block; object-fit: cover; }
+.testimonial-card__name { margin: .85rem 0 0; font-weight: 800; color: var(--color-blue-900); }
+.testimonial-card__role { margin: .2rem 0 0; color: var(--color-muted); font-size: .92rem; }
+
 .package-cascade { display: grid; gap: 1.25rem; margin-top: 2.5rem; }
 .package-card { border: 1px solid rgba(18, 50, 74, .1); border-top: 4px solid var(--color-blue-700); border-radius: var(--radius-lg); background: var(--color-white); box-shadow: 0 .75rem 2rem rgba(18, 50, 74, .06); overflow: hidden; transition: box-shadow .2s ease, transform .2s ease; }
 .package-card:hover { box-shadow: var(--shadow-soft); }
